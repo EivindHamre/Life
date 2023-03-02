@@ -1,26 +1,38 @@
 import Organism.Organism;
-import Organism.dna.DNA;
-import Organism.dna.Gene;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Random;
 
 public class App {
-
   public static void main(String[] args) throws Exception {
-    Organism o = new Organism(
-      new DNA(
-        new ArrayList<>() {
-          {
-            add(new Gene(0b00000000_00000001_0111111101111111));
-            add(new Gene(0b00000001_00000000_0111111101111111));
-          }
-        },
-        (short) 3
-      )
-    );
+    Random r = new Random();
+    List<Organism> organisms = new ArrayList<>() {
+      {
+        for (int i = 0; i < 1000; i++) add(Organism.randomOrganism(5, 1));
+      }
+    };
+
+    int gen = 0;
     while (true) {
-      o.step();
-      TimeUnit.MILLISECONDS.sleep(1000);
+      gen++;
+      for (int i = 0; i < 1000; i++) {
+        for (Organism o : organisms) {
+          o.step();
+        }
+      }
+      List<Organism> survivors = new ArrayList<>();
+      for (Organism o : organisms) {
+        if (o.pos.x() > 64) {
+          survivors.add(o);
+        }
+      }
+      System.out.print(gen);
+      System.out.print(": ");
+      System.out.println((float)(survivors.size()) / (float)(organisms.size()));
+      organisms = new ArrayList<>();
+      for (int i = 0; i < 100; i++) {
+        organisms.add(survivors.get(r.nextInt(survivors.size())).replicate());
+      }
     }
   }
 }

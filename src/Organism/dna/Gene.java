@@ -3,8 +3,9 @@ package Organism.dna;
 import java.util.Random;
 
 public record Gene(int code) {
+
   public int getInputNeuronID(){
-    return code >> 25;
+    return code >>> 25;
   }
   
   public boolean inputIsInternalNeuron(){
@@ -12,7 +13,7 @@ public record Gene(int code) {
   }
   
   public int getOutputId(){
-    return 0x7f & code >> 17;
+    return 0x7f & code >>> 17;
   }
 
   public boolean outputIsInternalNeuron(){
@@ -20,12 +21,12 @@ public record Gene(int code) {
   }
 
   public float getWeight(){
-    return Float.intBitsToFloat(0xffff0000 & code << 16) / 8.4738284e+37f;
+    return Float.intBitsToFloat(0xffff0000 & code << 16) / 4.2369142e+37f;
   }
 
   public Gene replicate(){
     Random r = new Random();
-    if(r.nextInt(100) == 0) return new Gene(code ^ (1<<r.nextInt(32)));
+    if(r.nextInt(10) == 0) return new Gene(code ^ (1<<r.nextInt(32)));
     return new Gene(code);
   }
 }

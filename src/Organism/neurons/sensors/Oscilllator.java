@@ -16,12 +16,9 @@ public class Oscilllator implements ValueSender {
     public void UpdateValue() {
         this.cycles = (short) (this.cycles + 1 % this.period);
         this.value = (float) (.5*Math.cos(this.k * this.cycles) + .5);
-        System.out.print(this);
-        System.out.print(".value = ");
-        System.out.println(this.value);
     }
 
-    public void setPeriod(int newPeriod){
+    public void setNewPeriod(int newPeriod){
         this.period = newPeriod;
     }
 }
