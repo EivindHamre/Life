@@ -1,32 +1,20 @@
 package Organism.neurons.actions;
 
 import Organism.Organism;
-import Organism.neurons.sensors.ValueSender;
-import java.util.HashMap;
 
-public class Turn implements ActionNeuron {
+public class Turn extends ActionNeuron {
 
-  final HashMap<ValueSender, Float> synapseWeights = new HashMap<>();
-  private double threshold;
+  private final int direction;
 
-  public Turn(double threshold) {
-    this.threshold = threshold;
+  public Turn(float threshold, int direction) {
+    super(threshold);
+    this.direction = direction;
   }
 
   @Override
   public void doAction(Organism organism) {
-    Float sum = 0f;
-    for (ValueSender s : this.synapseWeights.keySet()) {
-      sum += s.getValue() * this.synapseWeights.get(s);
-    }
-    double value = Math.atan(sum / this.synapseWeights.size());
-    if (Math.abs(value) < this.threshold) return;
-    organism.direction += value > 0 ? 1 : 3;
+    if (!this.weightedSynapseSumGreaterThanThreshold()) return;
+    organism.direction += this.direction;
     organism.direction %= 4;
-  }
-
-  @Override
-  public void setNewSynapse(ValueSender input, float weight) {
-    synapseWeights.put(input, weight);
   }
 }

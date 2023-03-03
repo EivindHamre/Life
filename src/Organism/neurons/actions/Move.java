@@ -3,19 +3,15 @@ package Organism.neurons.actions;
 import Organism.Organism;
 import environment.GridPosition;
 
-public class Move implements ActionNeuron {
-
-  final float threshold;
-  public final SynapseCollection synapses;
+public class Move extends ActionNeuron {
 
   public Move(float threshold) {
-    this.threshold = threshold;
-    this.synapses = new SynapseCollection();
+    super(threshold);
   }
 
   @Override
   public void doAction(Organism organism) {
-    if (this.synapses.getValue() < this.threshold) return;
+    if (!weightedSynapseSumGreaterThanThreshold()) return;
     int x = organism.pos.x();
     int y = organism.pos.y();
     switch (organism.direction) {

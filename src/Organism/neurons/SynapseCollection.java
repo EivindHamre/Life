@@ -1,4 +1,4 @@
-package Organism.neurons.actions;
+package Organism.neurons;
 
 import Organism.neurons.sensors.ValueSender;
 import java.util.HashMap;
@@ -11,8 +11,8 @@ public class SynapseCollection {
     this.synapses.put(input, weight);
   }
 
-  public double getValue() {
-    return Math.tanh(
+  public float getValue() {
+    return (float) Math.tanh(
       this.synapses.entrySet()
         .stream()
         .reduce(
