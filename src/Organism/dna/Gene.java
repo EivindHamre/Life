@@ -26,7 +26,7 @@ public record Gene(int code) {
 
   public Gene replicate(){
     Random r = new Random();
-    if(r.nextInt(10) == 0) return new Gene(code ^ (1<<r.nextInt(32)));
+    if(r.nextInt(1000) == 0) return new Gene(code ^ (1<<r.nextInt(32)));
     return new Gene(code);
   }
 }

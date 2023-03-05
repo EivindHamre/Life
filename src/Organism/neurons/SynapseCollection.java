@@ -2,16 +2,22 @@ package Organism.neurons;
 
 import Organism.neurons.sensors.ValueSender;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SynapseCollection {
 
-  private HashMap<ValueSender, Float> synapses;
+  private final Map<ValueSender, Float> synapses;
+
+  public SynapseCollection(){
+    this.synapses = new HashMap<>();
+  }
 
   public void newSynapse(ValueSender input, float weight) {
     this.synapses.put(input, weight);
   }
 
   public float getValue() {
+    if(synapses.size() == 0) return 0;
     return (float) Math.tanh(
       this.synapses.entrySet()
         .stream()

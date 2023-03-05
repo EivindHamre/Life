@@ -24,7 +24,7 @@ public class Organism {
   final DNA dna;
   final InternalNeuron[] internalNeurons;
   final ValueSender[] sensors;
-  final ActionNeuron[] actions;
+  public final ActionNeuron[] actions;
 
   private void createSynapse(Gene g) {
     boolean inputIsIneternalNeuron = g.inputIsInternalNeuron();
@@ -56,9 +56,9 @@ public class Organism {
     this.actions =
       new ActionNeuron[] {
         // new Talk(0.5f, "'ello"),
-        new Move(.5f),
-        new Turn(.5f, 1),
-        new Turn(.5f, 3),
+        new Move(0),
+        new Turn(0, 1),
+        new Turn(0, 3),
       };
 
     this.sensors =
