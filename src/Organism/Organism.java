@@ -4,6 +4,7 @@ import Organism.dna.DNA;
 import Organism.dna.Gene;
 import Organism.neurons.InternalNeuron;
 import Organism.neurons.actions.ActionNeuron;
+import Organism.neurons.actions.Jiggle;
 import Organism.neurons.actions.Move;
 // import Organism.neurons.actions.Talk;
 import Organism.neurons.actions.Turn;
@@ -11,6 +12,7 @@ import Organism.neurons.sensors.Constant;
 import Organism.neurons.sensors.Direction;
 import Organism.neurons.sensors.Oscilllator;
 import Organism.neurons.sensors.ValueSender;
+import environment.Grid;
 import environment.GridPosition;
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,6 +20,7 @@ import java.util.Random;
 public class Organism {
 
   static Random r = new Random();
+  private final Grid grid;
   public GridPosition pos;
   public int direction;
 
@@ -45,18 +48,19 @@ public class Organism {
     }
   }
 
-  public Organism(DNA dna) {
+  public Organism(DNA dna, Grid grid) {
     this.dna = dna;
     this.internalNeurons = dna.makeInternalNeurons();
-
+    this.grid = grid;
     this.direction = Organism.r.nextInt(4);
     this.pos =
-      new GridPosition(Organism.r.nextInt(128), Organism.r.nextInt(128));
+      new GridPosition(Organism.r.nextInt(this.grid.rows()), Organism.r.nextInt(this.grid.cols()));
 
     this.actions =
       new ActionNeuron[] {
         // new Talk(0.5f, "'ello"),
-        new Move(0),
+        new Move(0, this.grid),
+        new Jiggle(0, this.grid),
         new Turn(0, 1),
         new Turn(0, 3),
       };
@@ -73,7 +77,7 @@ public class Organism {
     }
   }
 
-  public static Organism randomOrganism(int genes, int internalNeurons) {
+  public static Organism randomOrganism(Grid grid, int genes, int internalNeurons) {
     return new Organism(
       new DNA(
         new ArrayList<>() {
@@ -84,7 +88,8 @@ public class Organism {
           }
         },
         (short) internalNeurons
-      )
+      ),
+      grid
     );
   }
 
@@ -95,6 +100,6 @@ public class Organism {
   }
 
   public Organism replicate() {
-    return new Organism(this.dna.replicate());
+    return new Organism(this.dna.replicate(), this.grid);
   }
 }
